@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import ImageCard from "./components";
-import cards from "./cards.json";
+import startCards from "./cards.json";
 
 
 class App extends Component {
   state ={
-    cards
+    cards: startCards,
+    score: 0,
+    highScore: 0
   };
 
   // componentDidMount() {
@@ -17,7 +19,7 @@ class App extends Component {
   randomizeCards = () => {
     let cards = this.state.cards;
     cards = cards.map(card => {card.random = Math.random();
-    return card});
+      return card});
     cards = cards.sort(function (a, b) {
       return a.random - b.random;
     });
@@ -26,27 +28,33 @@ class App extends Component {
 
   handleClick = (event) => {
     const id = event.target.id;
-    const clicked = event.target.clicked;
-    const cards = this.state.cards;
-    if(!clicked){
-      cards[id-1].clicked = true; 
-      this.setState({cards});
+    let cards = this.state.cards;
+    let index = 0;
+    for(let i = 0; i < cards.length; i++){
+      if(cards[i].id === id){
+        index = i;
+      }
+    }
+    console.log("clicked", event.target);
+    
+    if(!cards[index].clicked){
+      cards[index].clicked = true; 
+      const score = this.state.score + 1;
+      this.setState({cards, score});
       this.randomizeCards();
+    } else {
+      const score = 0;
+      let highScore = this.state.highScore;
+      if(this.state.highScore < this.state.score){
+        highScore = this.state.score;
+      }
+      cards = startCards.map(card => {card.random = Math.random();
+        card.clicked = false;
+        return card});
+      this.setState({score, highScore, cards});
     }
   };
 
-
-
-  // handleInputChange = event => {
-  //   // Getting the value and name of the input which triggered the change
-  //   const index = parseInt(event.target.id)-1;
-  //   const name = event.target.name;
-
-  //   // Updating the input's state
-  //   this.setState({
-  //     [name]: value
-  //   });
-  // };
   render() {
     return (
       <div className="App">
@@ -55,7 +63,7 @@ class App extends Component {
           <h1 className="App-title">Welcome to React Memory Game!</h1>
         </header>
         <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
+          Your current Score is {this.state.score}   || Your high Score is {this.state.highScore}
         </p>
         {this.state.cards.map(card => (
         <ImageCard id={card.id} image={card.image} clicked={card.clicked} onClick={this.handleClick}/>))}
