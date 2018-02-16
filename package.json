@@ -2,7 +2,7 @@
   "name": "reactmemhw",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://asehlers.github.io/reacthw",
+  "homepage": "https://asehlers.github.io/reacthw/public",
   "dependencies": {
     "gh-pages": "^1.1.0",
     "react": "^16.2.0",
