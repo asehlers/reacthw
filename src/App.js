@@ -30,14 +30,16 @@ class App extends Component {
     const id = event.target.id;
     let cards = this.state.cards;
     let index = 0;
+    console.log("clicked", event.target);
     for(let i = 0; i < cards.length; i++){
-      if(cards[i].id === id){
+      if(cards[i].id == id){
         index = i;
       }
     }
-    console.log("clicked", event.target);
+    console.log("index", index);
     
     if(!cards[index].clicked){
+      console.log("card faslse", cards[index].clicked);
       cards[index].clicked = true; 
       const score = this.state.score + 1;
       this.setState({cards, score});
